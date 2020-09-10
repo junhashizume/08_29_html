@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memopad</title>
+    <script src="js/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" href="css/sample.css">
+</head>
+<body>
+<header>
+    <h1>MemoPad</h1>
+</header>
+<main>
+    <input type="text" id="key">
+    <textarea id="memo"></textarea>
+    <ul>
+        <li id="save">SAVE</li>
+        <li id="clear">CLEAR</li>
+        <li id="back">BACK</li>
+    </ul>
+</main>
+<table id="list">
+    
+</table>
+
+<script>
+
+const key = $("#key").val();
+
+$("#save").on("click",function(){
+    // idkeyのvalue属性をkeyに代入
+    const key = $("#key").val();
+    // idmemoのvalue属性をvalueに代入
+    const value = $("#memo").val();
+    // 定数key,valueをローカルストレージに記録
+    localStorage.setItem(key,value);
+    // 定数htmlに定数key,valueを入れたtr要素を入れ込む
+    const html = '<tr><th>'+key+'</th><td>'+value+'</td></tr>';
+    $("#list").append(html);
+});
+
+$("#clear").on("click",function(){
+    // ローカルストレージを全て削除する
+    localStorage.clear();
+    // idlistの子要素を全て削除する
+    $("#list").empty();
+});
+
+$("#back").on("click",function(){
+    const $list = document.getElementById( "list" );
+    $list.deleteRow(-1);
+    const key = $("table:last").val();
+    localStorage.removeItem(key);
+});
+
+
+for(let i=0; i<localStorage.length; i++){
+    // ローカルデータのi番目のデータを取得する動作を定数keyに代入
+    const key = localStorage.key(i);
+    // i番目で取得したkeyデータを取得しvalueに代入
+    const value = localStorage.getItem(key);
+    // 定数htmlにkeyとvalueが取得したデータが入っているtrタグを生成
+    const html = '<tr><th>'+key+'</th><td>'+value+'</td></tr>';
+    $("#list").append(html);
+}
+
+
+</script>
+
+<footer>G’s課題</footer> 
+</body>
+</html>
